@@ -1,0 +1,398 @@
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;700;900&family=Amiri:wght@400;700&family=DM+Mono:wght@400;500&display=swap');
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  .blog {
+    font-family: 'Cairo', sans-serif;
+    direction: rtl;
+    text-align: right;
+    color: var(--color-text-primary);
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 2.5rem 1.5rem 4rem;
+    line-height: 1.9;
+  }
+
+  .tag-row { display: flex; gap: 8px; margin-bottom: 1.5rem; flex-wrap: wrap; justify-content: flex-end; }
+  .tag {
+    font-size: 11px; font-weight: 500; letter-spacing: 0.04em;
+    padding: 4px 12px; border-radius: 999px;
+    background: var(--color-background-secondary);
+    color: var(--color-text-secondary);
+    border: 0.5px solid var(--color-border-tertiary);
+  }
+  .tag.hot { background: #FAECE7; color: #993C1D; border-color: #F0997B; }
+
+  h1.headline {
+    font-family: 'Amiri', serif;
+    font-size: clamp(26px, 5vw, 44px);
+    font-weight: 700;
+    line-height: 1.3;
+    margin-bottom: 1rem;
+    color: var(--color-text-primary);
+  }
+  h1.headline em { font-style: italic; color: #534AB7; }
+
+  .byline {
+    display: flex; align-items: center; gap: 12px; flex-direction: row-reverse;
+    font-size: 13px; color: var(--color-text-secondary);
+    margin-bottom: 2rem; padding-bottom: 1.5rem;
+    border-bottom: 0.5px solid var(--color-border-tertiary);
+  }
+  .avatar {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: #EEEDFE; color: #534AB7;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 500; font-size: 13px; flex-shrink: 0;
+  }
+  .byline-name { font-weight: 500; color: var(--color-text-primary); display: block; }
+
+  .lead {
+    font-size: 17px; font-weight: 300; line-height: 1.9;
+    color: var(--color-text-secondary);
+    margin-bottom: 2rem;
+    border-right: 3px solid #534AB7;
+    padding-right: 1rem;
+  }
+
+  h2.section-title {
+    font-family: 'Amiri', serif;
+    font-size: 22px; font-weight: 700;
+    margin: 2.5rem 0 1rem;
+    color: var(--color-text-primary);
+  }
+
+  p { font-size: 15px; margin-bottom: 1rem; color: var(--color-text-primary); }
+
+  .arch-diagram {
+    background: var(--color-background-secondary);
+    border: 0.5px solid var(--color-border-tertiary);
+    border-radius: var(--border-radius-lg);
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+  }
+  .arch-title {
+    font-size: 11px; letter-spacing: 0.04em;
+    color: var(--color-text-secondary); font-weight: 500;
+    margin-bottom: 1rem; text-align: right;
+  }
+  .layer-stack { display: flex; flex-direction: column; gap: 6px; }
+  .layer {
+    display: flex; align-items: center; gap: 12px; flex-direction: row-reverse;
+    padding: 10px 14px;
+    border-radius: var(--border-radius-md);
+    border: 0.5px solid transparent;
+    font-size: 13px;
+  }
+  .layer-icon { font-size: 18px; flex-shrink: 0; }
+  .layer-content { text-align: right; }
+  .layer-label { font-weight: 500; }
+  .layer-desc { font-size: 12px; margin-top: 2px; }
+
+  .layer.l1 { background: #EEEDFE; border-color: #AFA9EC; color: #3C3489; }
+  .layer.l2 { background: #E1F5EE; border-color: #5DCAA5; color: #085041; }
+  .layer.l3 { background: #E6F1FB; border-color: #85B7EB; color: #0C447C; }
+  .layer.l4 { background: #FAEEDA; border-color: #FAC775; color: #633806; }
+  .layer.l5 { background: #EAF3DE; border-color: #97C459; color: #27500A; }
+
+  .arrow-connector {
+    text-align: center; font-size: 16px; color: var(--color-text-secondary);
+    line-height: 1; margin: -2px 0;
+  }
+
+  .callout {
+    display: flex; gap: 12px; align-items: flex-start; flex-direction: row-reverse;
+    background: #EEEDFE; border-right: 3px solid #534AB7;
+    border-radius: 0 0 var(--border-radius-md) var(--border-radius-md);
+    border-radius: var(--border-radius-md);
+    border-right: 3px solid #534AB7;
+    padding: 1rem 1.25rem; margin: 1.5rem 0;
+  }
+  .callout-icon { font-size: 20px; color: #534AB7; flex-shrink: 0; margin-top: 2px; }
+  .callout p { font-size: 14px; margin: 0; color: #3C3489; }
+
+  .callout.warn { background: #FAEEDA; border-color: #EF9F27; }
+  .callout.warn .callout-icon { color: #BA7517; }
+  .callout.warn p { color: #633806; }
+
+  .component-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 10px; margin: 1.5rem 0;
+  }
+  .comp-card {
+    background: var(--color-background-primary);
+    border: 0.5px solid var(--color-border-tertiary);
+    border-radius: var(--border-radius-md);
+    padding: 14px; text-align: right;
+  }
+  .comp-card .comp-icon { font-size: 22px; margin-bottom: 6px; }
+  .comp-card .comp-name { font-size: 13px; font-weight: 500; margin-bottom: 3px; color: var(--color-text-primary); }
+  .comp-card .comp-desc { font-size: 12px; color: var(--color-text-secondary); line-height: 1.6; }
+
+  .code-block {
+    background: var(--color-background-secondary);
+    border: 0.5px solid var(--color-border-tertiary);
+    border-radius: var(--border-radius-md);
+    padding: 1rem 1.25rem;
+    margin: 1rem 0;
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--color-text-primary);
+    line-height: 1.7;
+    overflow-x: auto;
+    direction: ltr;
+    text-align: left;
+  }
+  .kw { color: #534AB7; font-weight: 500; }
+  .str { color: #0F6E56; }
+  .cmt { color: var(--color-text-secondary); font-style: italic; }
+  .fn { color: #993C1D; }
+
+  .checklist { list-style: none; padding: 0; margin: 1rem 0; display: flex; flex-direction: column; gap: 6px; }
+  .checklist li {
+    display: flex; align-items: flex-start; gap: 8px; flex-direction: row-reverse;
+    font-size: 14px; color: var(--color-text-primary);
+  }
+  .check-icon { color: #0F6E56; font-size: 16px; flex-shrink: 0; margin-top: 2px; }
+
+  .stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 1.5rem 0; }
+  .stat-card {
+    background: var(--color-background-secondary);
+    border-radius: var(--border-radius-md);
+    padding: 1rem; text-align: center;
+  }
+  .stat-num { font-size: 26px; font-weight: 500; color: var(--color-text-primary); display: block; }
+  .stat-lbl { font-size: 12px; color: var(--color-text-secondary); margin-top: 2px; }
+
+  .divider { border: none; border-top: 0.5px solid var(--color-border-tertiary); margin: 2rem 0; }
+
+  .cta-bar {
+    background: #EEEDFE;
+    border-radius: var(--border-radius-lg);
+    padding: 1.25rem 1.5rem;
+    display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    flex-wrap: wrap; margin-top: 2rem; flex-direction: row-reverse;
+  }
+  .cta-bar p { font-size: 14px; color: #3C3489; margin: 0; font-weight: 500; }
+  .cta-btn {
+    background: #534AB7; color: #fff; border: none;
+    padding: 8px 18px; border-radius: var(--border-radius-md);
+    font-size: 13px; font-weight: 500; cursor: pointer;
+    font-family: 'Cairo', sans-serif;
+  }
+  .cta-btn:hover { background: #3C3489; }
+</style>
+
+<div class="blog">
+
+  <div class="tag-row">
+    <span class="tag hot"><i class="ti ti-flame" aria-hidden="true" style="font-size:12px; margin-left:4px;"></i>رائج الآن</span>
+    <span class="tag">هندسة الذكاء الاصطناعي</span>
+    <span class="tag">المعمارية البرمجية</span>
+    <span class="tag">12 دقيقة قراءة</span>
+  </div>
+
+  <h1 class="headline">كيف تبني نظام ذكاء اصطناعي<br><em>يعمل فعلاً في بيئة الإنتاج</em></h1>
+
+  <div class="byline">
+    <div class="avatar">AI</div>
+    <div>
+      <span class="byline-name">مكتب الهندسة المعمارية</span>
+      <span>16 مايو 2026 · يُحدَّث أسبوعياً</span>
+    </div>
+  </div>
+
+  <p class="lead">
+    الجميع يريد بناء نظام ذكاء اصطناعي. لكن القلة فقط تدرك أن النموذج لا يمثل سوى 20% من العمل. الـ 80% الباقية؟ المعمارية. إليك كيف تبنيها بشكل صحيح.
+  </p>
+
+  <h2 class="section-title">لماذا المعمارية أهم من النموذج نفسه؟</h2>
+
+  <p>أقنعت موجة الضجيج حول الذكاء الاصطناعي كثيراً من المهندسين بأن اختيار النموذج الصحيح هو الجزء الصعب. لكنه ليس كذلك. نموذج رائع مُحشور في خط أنابيب هزيل سيفشل في الإنتاج، بينما نظام مبني بمعمارية محكمة على نموذج متوسط يمكنه التفوق على المنافسين في كل مرة.</p>
+
+  <p>الفرق بين عرض توضيحي يُبهر في العروض التقديمية ونظام يتوسع لملايين المستخدمين يكمن كلياً في المعمارية.</p>
+
+  <div class="stats-row">
+    <div class="stat-card">
+      <span class="stat-num">80%</span>
+      <span class="stat-lbl">من فشل أنظمة الذكاء الاصطناعي سببه البنية التحتية لا النموذج</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-num">5×</span>
+      <span class="stat-lbl">سرعة أعلى في التطوير مع معمارية معيارية مرنة</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-num">60%</span>
+      <span class="stat-lbl">من تكلفة الإنتاج غالباً في معالجة البيانات لا الاستدلال</span>
+    </div>
+  </div>
+
+  <h2 class="section-title">المعمارية ذات الخمس طبقات</h2>
+
+  <p>كل نظام ذكاء اصطناعي جاهز للإنتاج يشترك في هيكل معماري موحد. فكّر فيه كمكدس حيث لكل طبقة مسؤولية واحدة وعقد واضح مع الطبقات فوقها وتحتها.</p>
+
+  <div class="arch-diagram">
+    <div class="arch-title"><i class="ti ti-stack" aria-hidden="true" style="font-size:13px; margin-left:5px;"></i>طبقات نظام الذكاء الاصطناعي الأساسية</div>
+    <div class="layer-stack">
+      <div class="layer l1">
+        <i class="ti ti-user-circle" aria-hidden="true" style="font-size:18px;"></i>
+        <div class="layer-content">
+          <div class="layer-label">الطبقة 1 — الواجهة وتجربة المستخدم</div>
+          <div class="layer-desc">واجهة المحادثة، بوابة API، المدخلات الصوتية ومتعددة الوسائط.</div>
+        </div>
+      </div>
+      <div class="arrow-connector"><i class="ti ti-arrow-down" aria-hidden="true"></i></div>
+      <div class="layer l2">
+        <i class="ti ti-brain" aria-hidden="true" style="font-size:18px;"></i>
+        <div class="layer-content">
+          <div class="layer-label">الطبقة 2 — طبقة التنسيق والتوجيه</div>
+          <div class="layer-desc">توجيه التعليمات، حلقات الوكلاء، تفكيك المهام، منطق التسلسل.</div>
+        </div>
+      </div>
+      <div class="arrow-connector"><i class="ti ti-arrow-down" aria-hidden="true"></i></div>
+      <div class="layer l3">
+        <i class="ti ti-cpu" aria-hidden="true" style="font-size:18px;"></i>
+        <div class="layer-content">
+          <div class="layer-label">الطبقة 3 — طبقة النموذج</div>
+          <div class="layer-desc">استدلال LLM، التضمينات، المحولات الدقيقة، النماذج الاحتياطية.</div>
+        </div>
+      </div>
+      <div class="arrow-connector"><i class="ti ti-arrow-down" aria-hidden="true"></i></div>
+      <div class="layer l4">
+        <i class="ti ti-database" aria-hidden="true" style="font-size:18px;"></i>
+        <div class="layer-content">
+          <div class="layer-label">الطبقة 4 — الذاكرة والمعرفة</div>
+          <div class="layer-desc">قواعد البيانات المتجهية، خطوط RAG، سياق الجلسة، الذاكرة طويلة الأمد.</div>
+        </div>
+      </div>
+      <div class="arrow-connector"><i class="ti ti-arrow-down" aria-hidden="true"></i></div>
+      <div class="layer l5">
+        <i class="ti ti-tool" aria-hidden="true" style="font-size:18px;"></i>
+        <div class="layer-content">
+          <div class="layer-label">الطبقة 5 — طبقة الأدوات والإجراءات</div>
+          <div class="layer-desc">APIs، تنفيذ الكود، البحث على الويب، إدارة الملفات، التكاملات الخارجية.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h2 class="section-title">الطبقة الثانية — حيث تعثر معظم الفرق</h2>
+
+  <p>طبقة التنسيق هي الجهاز العصبي لتطبيقك. تقرر أي نموذج يُستدعى، وبأي ترتيب، وبأي سياق، وماذا يحدث عند الفشل. الفرق التي تتعامل مع هذا كفكرة لاحقة تنتهي بسلاسل تعليمات فوضوية تنهار تحت الضغط.</p>
+
+  <div class="callout">
+    <i class="ti ti-bulb callout-icon" aria-hidden="true"></i>
+    <p><strong>مبدأ التصميم:</strong> عامل كل خطوة تنسيق كدالة نقية — نفس المدخل ينتج نفس المخرج. هذا يجعل الاختبار والتخزين المؤقت وإعادة المحاولة أبسط بكثير، ويتيح تبادل النماذج دون إعادة كتابة المنطق.</p>
+  </div>
+
+  <h2 class="section-title">المكونات الأساسية التي يجب تصميمها من اليوم الأول</h2>
+
+  <div class="component-grid">
+    <div class="comp-card">
+      <div class="comp-icon"><i class="ti ti-shield-check" aria-hidden="true" style="color:#534AB7;"></i></div>
+      <div class="comp-name">الحواجز الوقائية</div>
+      <div class="comp-desc">التحقق من المدخلات والمخرجات، تصفية المحتوى، كشف البيانات الحساسة.</div>
+    </div>
+    <div class="comp-card">
+      <div class="comp-icon"><i class="ti ti-clock-hour-4" aria-hidden="true" style="color:#0F6E56;"></i></div>
+      <div class="comp-name">التخزين المؤقت</div>
+      <div class="comp-desc">التخزين الدلالي يخفض تكاليف الاستدلال بنسبة 40-60% في سير العمل المتكرر.</div>
+    </div>
+    <div class="comp-card">
+      <div class="comp-icon"><i class="ti ti-chart-line" aria-hidden="true" style="color:#185FA5;"></i></div>
+      <div class="comp-name">قابلية المراقبة</div>
+      <div class="comp-desc">تتبع كل استدعاء للنموذج. سجّل زمن الاستجابة، عدد الرموز، التكاليف، والأخطاء.</div>
+    </div>
+    <div class="comp-card">
+      <div class="comp-icon"><i class="ti ti-arrows-exchange" aria-hidden="true" style="color:#BA7517;"></i></div>
+      <div class="comp-name">النماذج الاحتياطية</div>
+      <div class="comp-desc">إذا كان النموذج الرئيسي بطيئاً أو معطلاً، وجّه تلقائياً لنموذج بديل.</div>
+    </div>
+    <div class="comp-card">
+      <div class="comp-icon"><i class="ti ti-lock" aria-hidden="true" style="color:#993C1D;"></i></div>
+      <div class="comp-name">المصادقة والحدود</div>
+      <div class="comp-desc">حصص المستخدمين، إدارة مفاتيح API، والحماية من الإساءة.</div>
+    </div>
+    <div class="comp-card">
+      <div class="comp-icon"><i class="ti ti-test-pipe" aria-hidden="true" style="color:#3B6D11;"></i></div>
+      <div class="comp-name">خط التقييم</div>
+      <div class="comp-desc">تقييمات آلية عند كل تغيير في النموذج أو التعليمات. التراجع يكشف نفسه.</div>
+    </div>
+  </div>
+
+  <h2 class="section-title">بناء خط RAG بشكل صحيح</h2>
+
+  <p>التوليد المعزز بالاسترجاع (RAG) هو الطريقة التي تمنح بها نظامك وصولاً لمعرفة لم يُدرَّب عليها — وثائقك، قاعدة بياناتك، تاريخ مستخدميك. إذا نُفِّذ بشكل سيء يصبح مصدراً للهلوسة والبطء، وإذا نُفِّذ بشكل صحيح يصبح قوة خارقة.</p>
+
+  <div class="code-block">
+<span class="cmt"># خط RAG للإنتاج — نسخة مبسطة</span>
+<span class="kw">async def</span> <span class="fn">rag_query</span>(user_query: str, user_id: str):
+    <span class="cmt"># 1. تحويل الاستعلام إلى متجه</span>
+    query_vec = <span class="kw">await</span> embedder.<span class="fn">embed</span>(user_query)
+
+    <span class="cmt"># 2. استرجاع أفضل المقاطع ذات الصلة</span>
+    chunks = <span class="kw">await</span> vector_db.<span class="fn">search</span>(
+        query_vec, top_k=<span class="str">5</span>, filter={<span class="str">"user_id"</span>: user_id}
+    )
+
+    <span class="cmt"># 3. بناء السياق المؤسَّس</span>
+    context = <span class="fn">format_context</span>(chunks)
+
+    <span class="cmt"># 4. استدعاء النموذج مع السياق المسترجع</span>
+    response = <span class="kw">await</span> llm.<span class="fn">complete</span>(
+        system=<span class="str">"أجب باستخدام السياق المقدم فقط."</span>,
+        user=f<span class="str">"{context}\n\nالسؤال: {user_query}"</span>
+    )
+    <span class="kw">return</span> response
+  </div>
+
+  <div class="callout warn">
+    <i class="ti ti-alert-triangle callout-icon" aria-hidden="true"></i>
+    <p><strong>فخ شائع:</strong> استراتيجية التقطيع مهمة للغاية. المقاطع ذات الحجم الثابت تفقد الحدود الدلالية. استثمر في التقطيع الواعي بالمستند — قسّم حسب القسم، الفقرة، أو الوحدة الدلالية، ليس بعدد الأحرف.</p>
+  </div>
+
+  <h2 class="section-title">الأنظمة الفاعلة: الحدود الجديدة (وحقل الألغام)</h2>
+
+  <p>الذكاء الاصطناعي الفاعل — الأنظمة التي تخطط وتتصرف وتراقب في حلقة — هو النمط المعماري الأقوى اليوم، والأصعب بناءً بأمان. الحلقة مفهومياً بسيطة: النموذج يفكر في الإجراء، أداة تنفّذه، النتيجة تعود، والنموذج يقرر ما يلي.</p>
+
+  <p>في التطبيق الفعلي، يمكن لهذه الحلقة أن تنحرف. بنية الوكيل الجيدة تعني:</p>
+
+  <ul class="checklist">
+    <li><i class="ti ti-circle-check check-icon" aria-hidden="true"></i>حدود صارمة على تكرارات الحلقة وإجمالي استدعاءات الأدوات لكل مهمة</li>
+    <li><i class="ti ti-circle-check check-icon" aria-hidden="true"></i>نقاط تفتيش بمشاركة بشرية للإجراءات غير القابلة للتراجع (إرسال الإيميلات، الكتابة في قواعد البيانات)</li>
+    <li><i class="ti ti-circle-check check-icon" aria-hidden="true"></i>لوحة ملاحظات أو ذاكرة عمل منفصلة عن السياق النهائي</li>
+    <li><i class="ti ti-circle-check check-icon" aria-hidden="true"></i>بيئات تنفيذ كود معزولة — لا تشغّل أبداً كوداً من النموذج على بنية تحتية مكشوفة</li>
+    <li><i class="ti ti-circle-check check-icon" aria-hidden="true"></i>سجل تدقيق لكل إجراء منفّذ، لا المخرج النهائي فقط</li>
+  </ul>
+
+  <hr class="divider">
+
+  <h2 class="section-title">قائمة التحقق قبل الإطلاق</h2>
+
+  <p>قبل أن تطلق أي شيء، مرّ عبر هذه النقاط. ليست اختيارية — إنها إلزامية.</p>
+
+  <ul class="checklist">
+    <li><i class="ti ti-circle-check check-icon" aria-hidden="true"></i>كل استدعاء للنموذج يُتتبع مع زمن الاستجابة والتكلفة وعدد الرموز</li>
+    <li><i class="ti ti-circle-check check-icon" aria-hidden="true"></i>الحواجز الوقائية مفعّلة على المدخلات والمخرجات</li>
+    <li><i class="ti ti-circle-check check-icon" aria-hidden="true"></i>نموذج احتياطي واحد على الأقل مُهيأ</li>
+    <li><i class="ti ti-circle-check check-icon" aria-hidden="true"></i>البيانات الشخصية لا تُسجَّل بنص واضح</li>
+    <li><i class="ti ti-circle-check check-icon" aria-hidden="true"></i>حدود المعدلات مضبوطة لكل مستخدم ولكل مفتاح API</li>
+    <li><i class="ti ti-circle-check check-icon" aria-hidden="true"></i>مجموعة تقييم آلية تعمل عند كل نشر</li>
+    <li><i class="ti ti-circle-check check-icon" aria-hidden="true"></i>لديك خطة تراجع إذا بدأ النموذج بالتدهور في الإنتاج</li>
+  </ul>
+
+  <h2 class="section-title">الكلمة الأخيرة</h2>
+
+  <p>المهندسون الذين يبنون أكثر أنظمة الذكاء الاصطناعي تأثيراً اليوم ليسوا أكثر الناس معرفة بالمحولات. إنهم الذين يتعاملون مع الذكاء الاصطناعي كمسألة هندسة أنظمة — بكل ما يستلزمه ذلك من صرامة. فكّر في طبقات. صمّم للفشل. راقب كل شيء. اشحن شيئاً حقيقياً.</p>
+
+  <p>النموذج مكوّن. النظام هو المنتج.</p>
+
+  <div class="cta-bar">
+    <p><i class="ti ti-message-circle" aria-hidden="true" style="margin-left:6px;"></i>هل تريد التعمق في أي طبقة من هذه الطبقات؟</p>
+    <button class="cta-btn" onclick="sendPrompt('أريد التعمق في طبقة التنسيق لأنظمة الذكاء الاصطناعي ↗')">اسأل كلود للمزيد ↗</button>
+  </div>
+
+</div>
